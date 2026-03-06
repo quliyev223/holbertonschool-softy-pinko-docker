@@ -1,19 +1,24 @@
-# Use the latest Ubuntu image
+# Use the latest Ubuntu image as the foundation
 FROM ubuntu:latest
 
-# Update package list and install Python and Pip
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y python3 python3-pip
+# Update the package list and install python3 and pip3
+# The -y flag automatically confirms installation
+RUN apt-get update && apt-get install -y python3 python3-pip
 
-# Install Flask and Flask-CORS
-# We need Flask-CORS to allow the front-end to talk to this API
-RUN pip3 install flask flask-cors
+# Remove this file to avoid "externally-managed-environment" errors when using pip
+RUN rm /usr/lib/python*/EXTERNALLY-MANAGED
 
-# Set the working directory inside the container
+# Install Flask using pip3 as required
+RUN pip3 install flask
+
+# Install Flask-CORS to allow cross-origin requests from the front-end
+RUN pip3 install flask-cors
+
+# Set the working directory inside the container to /app
 WORKDIR /app
 
-# Copy the python script into the container
+# Copy our Python script from the local directory to the container
 COPY ./api.py /app/api.py
 
-# Run the flask application
-CMD ["python3", "/app/api.py"]
+# Command to run the Flask application
+CMD ["python3", "api.py"]
