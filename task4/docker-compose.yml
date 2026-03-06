@@ -1,0 +1,18 @@
+services:
+  back-end:
+    build:
+      context: ./back-end        # where to find the Dockerfile
+      dockerfile: Dockerfile     # name of the Dockerfile
+    image: softy-pinko-back-end:task4  # name of the image
+    ports:
+      - "5252:5252"              # map port 5252 on host to container
+
+  front-end:
+    build:
+      context: ./front-end       # where to find the Dockerfile
+      dockerfile: Dockerfile     # name of the Dockerfile
+    image: softy-pinko-front-end:task4  # name of the image
+    ports:
+      - "9000:9000"              # map port 9000 on host to container
+    depends_on:
+      - back-end                 # start back-end first before front-end
